@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 public class CsvParser {
     Map<String, Set<String>> nameHobbies = new HashMap<>();
     List<String> introduces = new ArrayList<>();
-    Set<String> hobbies = new HashSet<>();
 
     public void getHobbies() {
 
@@ -25,9 +24,10 @@ public class CsvParser {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] splitted = line.split(",");
-                nameHobbies.put(splitted[0].trim(), Set.of(splitted[1].trim().split(":")));
-                introduces.add(splitted[2].trim());
-                hobbies.addAll(Set.of(splitted[1].trim().split(":")));
+                if (splitted.length >= 3) {
+                    nameHobbies.put(splitted[0].trim(), Set.of(splitted[1].trim().split(":")));
+                    introduces.add(splitted[2].trim());
+                }
             }
 
         } catch (IOException e) {
@@ -37,40 +37,41 @@ public class CsvParser {
     }
 
     public Map<String, List<String>> getHobbyMember() {
-
         Map<String, List<String>> hobbyMember = new HashMap<>();
-        hobbies.forEach(hobby -> {
-            nameHobbies.entrySet().stream().filter(nameHobby ->
-                    nameHobby.getValue().contains(hobby)
-            ).forEach(nameHobby -> {
-                hobbyMember.putIfAbsent(hobby, new ArrayList<>());
-                hobbyMember.get(hobby).add(nameHobby.getKey());
-            });
 
+        nameHobbies.forEach((name, hobbies) -> { ///map에 foreach가능!!
+            hobbies.forEach(hobby -> {
+                hobbyMember.putIfAbsent(hobby, new ArrayList<>());
+                hobbyMember.get(hobby).add(name);
+            });
         });
+
         return hobbyMember;
     }
 
     public Map<String, Integer> getHobbyCount() {
-        Map<String, List<String>> hobbyMem = getHobbyMember();
-        return hobbyMem.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, each -> each.getValue().size()));
+        return getHobbyMember().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, each -> each.getValue().size()));
     }
 
     public Map<String, Integer> getHobbyLastname(String lastName) {
-        Map<String, Integer> hobbyLastname = new HashMap<>();
-        Map<String, List<String>> hobbyMember = getHobbyMember();
+//        Map<String, List<String>> hobbyMember = getHobbyMember();
+//
+//        Map<String, Integer> hobbyLastname = new HashMap<>();
+//        for (Map.Entry<String, List<String>> each : hobbyMember.entrySet()) {
+//            int cnt = 0;
+//            for (String member : each.getValue()) {
+//                if (member.startsWith(lastName)) {
+//                    cnt++;
+//                }
+//            }
+//            hobbyLastname.put(each.getKey(), cnt);
+//        }
+//
+//        return hobbyLastname;
+        return getHobbyMember().entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, each -> (int) each.getValue().stream().filter(member -> member.startsWith(lastName)).count()));
 
-        for (Map.Entry<String, List<String>> each : hobbyMember.entrySet()) {
-            int cnt = 0;
-            for (String member : each.getValue()) {
-                if (member.startsWith(lastName)) {
-                    cnt++;
-                }
-            }
-            hobbyLastname.put(each.getKey(), cnt);
-        }
 
-        return hobbyLastname;
     }
 
     public long getLikes() {
