@@ -16,32 +16,32 @@ import lombok.Getter;
 
 @Getter
 public class CsvParser {
-    private Map<String, Set<String>> nameHobbies = new HashMap<>();
-    private List<String> introduces = new ArrayList<>();
+  private Map<String, Set<String>> nameHobbies = new HashMap<>();
+  private List<String> introduces = new ArrayList<>();
 
-    public CsvParser(){
-      this.init();
-    }
-    
-    private void init() {
-        ClassPathResource resource = new ClassPathResource("member.csv");
+  public CsvParser() {
+    this.init();
+  }
 
-        try (InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
+  private void init() {
+    ClassPathResource resource = new ClassPathResource("member.csv");
 
-             BufferedReader reader = new BufferedReader(inputStreamReader);) {
-            String headers = reader.readLine();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] splitted = line.split(",");
-                if (splitted.length >= 3) {
-                    nameHobbies.put(splitted[0].trim(), Set.of(splitted[1].trim().split(":")));
-                    introduces.add(splitted[2].trim());
-                }
-            }
+    try (InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        BufferedReader reader = new BufferedReader(inputStreamReader);) {
+      String headers = reader.readLine();
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] splitted = line.split(",");
+        if (splitted.length >= 3) {
+          nameHobbies.put(splitted[0].trim(), Set.of(splitted[1].trim().split(":")));
+          introduces.add(splitted[2].trim());
         }
+      }
 
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+
+  }
 }
