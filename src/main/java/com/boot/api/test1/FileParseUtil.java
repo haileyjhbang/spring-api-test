@@ -3,7 +3,6 @@ package com.boot.api.test1;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,14 +17,10 @@ public final class FileParseUtil {
     objectMapper.registerModule(new JavaTimeModule());
   }
 
-  public static <T> List<T> getList(Class<T> clazz, String fileName) {
-    try {
-      return objectMapper.readValue(
-          Files.readAllBytes(Paths.get(DATA_DIR, fileName)),
-         TypeFactory.defaultInstance().constructCollectionType(List.class, clazz));
+  public static <T> List<T> getList(Class<T> clazz, String fileName) throws IOException {
+    return objectMapper.readValue(
+        Files.readAllBytes(Paths.get(DATA_DIR, fileName)),
+        TypeFactory.defaultInstance().constructCollectionType(List.class, clazz));
 
-    } catch (IOException e) {
-      return Collections.emptyList();
-    }
   }
 }
