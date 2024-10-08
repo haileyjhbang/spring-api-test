@@ -27,7 +27,6 @@ public class CsvParser {
     ClassPathResource resource = new ClassPathResource("member.csv");
 
     try (InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
-
         BufferedReader reader = new BufferedReader(inputStreamReader);) {
       String headers = reader.readLine();
       String line;

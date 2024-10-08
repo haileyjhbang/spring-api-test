@@ -1,4 +1,4 @@
-package com.boot.api.test1;
+package com.boot.api.reservation;
 
 public class ErrorMessage {
   private String error;

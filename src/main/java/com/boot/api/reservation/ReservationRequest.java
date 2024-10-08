@@ -1,4 +1,4 @@
-package com.boot.api.test1;
+package com.boot.api.reservation;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,10 +9,6 @@ public class ReservationRequest {
   public String getCustomerName() {
     return customerName;
   }
-
-  // public void setCustomerName(String customerName) {
-  //   this.customerName = customerName;
-  // }
 
   public ReservationRequest(String customerName) {
     this.customerName = customerName;

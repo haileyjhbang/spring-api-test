@@ -1,4 +1,4 @@
-package com.boot.api.test1;
+package com.boot.api.reservation;
 
 import java.io.IOException;
 import java.nio.file.Files;
