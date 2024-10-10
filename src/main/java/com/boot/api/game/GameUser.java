@@ -17,11 +17,11 @@ public class GameUser {
   }
   public int getId() {
     return id;
-}
-public int getWin() {
-    return win;
-}
-public int getLose() {
-    return lose;
-}    
+  }
+  public int getWin() {
+      return win;
+  }
+  public int getLose() {
+      return lose;
+  }
 }
